@@ -1,0 +1,31 @@
+<h4>جهة التمويل المقترحة</h4>  
+<%= simple_form_for([@proposal, Fund.new], :remote => true, :url => add_fund_path(@proposal.id), :html => { :method => :post } ) do |f| %>
+                   <div class="row">
+                    <div class="col-xs-6">
+                      <div class="control-group">
+                        مصدر التمويل:
+                        <div class="controls">
+                        <% @fund_sources=FundSource.where("id not in (select fund_source_id from funds where proposal_id=?)", @proposal.id) %>
+                        
+                          <%= f.collection_select :fund_source_id, @fund_sources , :id, :description, {prompt: "اختر مصدر تمويل"}, :class => 'form-control', :disabled => @@view_only %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-6">
+                      <div class="control-group">
+                        النسبة (٪):
+                        <div class="controls">
+                          <%= f.text_field :percentage, :class => 'form-control', :disabled => @@view_only %>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                    <br/>
+                    <div class="actions">
+                        <%= f.hidden_field :proposal_id, value: @proposal.id %>    
+                        <%= f.submit "أضف مصدر تمويل", :class => 'btn btn-success btn-block', style: "font-family: 'Droid Arabic Kufi'; font-size: 15px", :disabled => @@view_only, :remote => true %> 
+                    </div>  
+                   
+        <% end %>
+
+<%= render :partial => 'funds/index' %>

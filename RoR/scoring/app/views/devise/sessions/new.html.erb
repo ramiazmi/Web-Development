@@ -1,0 +1,35 @@
+<br/>
+<div class="panel panel-success" style="text-align: center;background-color: white;box-shadow: 15px 15px 15px #888888;border:1px; border-radius:17px; width:40%" >
+  <div class="panel-heading">
+   <h4 class="form-signin-heading" style="font-family: 'Droid Arabic Kufi'; font-size: 18px"> شاشة الدخول&nbsp;&nbsp;<span><i class="fa fa-user"></i></span></h4>
+  </div>
+  <div class="panel-body" style="font-family: 'Droid Arabic Kufi'; font-size: 14px;">
+    <%= form_for(resource, as: resource_name, class: "form-horizontal", role: "form", url: session_path(resource_name)) do |f| %>
+      <div style="margin-bottom: 25px" class="input-group">         
+      </div>
+      <div style="margin-bottom: 25px" class="input-group">
+        <span class="input-group-addon">البريد الإلكتروني</span>
+        <%= f.email_field :email, autofocus: true, placeholder: "Enter Email address", class: "form-control  input-lg", value: "", style: "text-align: center; dir: ltr" %>
+        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+      </div>
+      <div style="margin-bottom: 25px" class="input-group">
+        <span class="input-group-addon">كــــــــــــــلمة المرور</span>
+        <%= f.password_field :password, placeholder: "Enter Password", class: "form-control  input-lg", value: "", style: "text-align: center; dir: ltr" %>  
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+      </div>
+      <div style="margin-bottom: 10px" class="actions">
+        <%= f.submit "دخول", :class => "btn btn-lg btn-primary btn-block" %>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12 control">
+          <div style="border-top: 1px solid#888; padding-top:8px; font-size:15px" >
+            Don't have an account! 
+            <a href="/users/sign_up" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+              Register Here
+            </a>
+          </div>
+        </div>
+      </div> 
+    <% end %>
+   </div>
+</div>

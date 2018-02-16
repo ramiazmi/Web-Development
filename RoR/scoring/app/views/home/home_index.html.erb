@@ -1,0 +1,165 @@
+<div class="jumbotron">
+    <h2><i class="fa fa-th-large"></i> نظام تقييم واختيار المشاريع التـنموية</h2>
+</div>
+<br>
+<% unless (user_signed_in?) %>
+    <div class="col-md-4">
+      <h2 style="font-family: 'Droid Arabic Kufi';">البنك الإسلامي للتنمية</h2>
+        <p>البنك الإسلاميّ للتنمية" مؤسسة ماليّة دوليّة أنشئت تطبيقاً لبيان العزم الصادر عن مؤتمر وزراء مالية 
+			الدول الإسلاميّة، الذي عُقد في ذي القعدة 1393هـ (ديسمبر 1973م) بمدينة جدّة. وعُقِد الاجتماع 
+			الافتتاحيّ لمجلس المحافظين في رجب 1395هـ (يوليو 1975م). وبدأ أنشطته رسميّاً في 15 شوّال 
+			1395هـ (20 أكتوبر 1975م).
+			يتطلّع "البنك الإسلاميّ للتنمية" إلى أن يكون بحلول عام 1440هـ(2020م)، بنكاً إنمائيّاً عالميَّ الطراز، إسلاميَّ المبادئ.
+        </p>
+        <p><a class="btn btn-default" href="http://www.isdb.org/">للمزيد &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2 style="font-family: 'Droid Arabic Kufi';">صندوق الأقصى</h2>
+        <p>يقوم صندوق الأقصى منذ إنشائه بتنفيذ مشاريع تنموية في مختلف القطاعات الاقتصادية والاجتماعية لخدمة الشعب الفلسطيني، مساهما من خلالها في تأهيل وتنمية القدرات البشرية واستحداث فرص العمل، وطالت تلك المشاريع القطاعات التالية:
+				البنية التحتية، التعليم، الصحة ، التجارة والصناعة، الزراعة، العمل الأهلي، مدينة القدس.</p>
+        <p><a class="btn btn-default" href="http://www.isdb.org/">للمزيد &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2 style="font-family: 'Droid Arabic Kufi';">دليل تقييم واختيار المشاريع</h2>
+        <p>يهدف هذا الدليل إلى توضيح عملية ومعايير تقييم مقتـرحات المشاريع التنموية المقدمة من المؤسسات 
+		المختلفة سواء للصنادق العربية الممولة أو للبنك الإسلامي مباشرة. وبما أنه يتم استقبال عدد كبـير من 
+		مقتـرح ات المشاريع فذلك يستوجب وجود معايير فنية واضحة لتقييم واختيار المشاريع بشكل واضح 
+		وشفاف. يشكل هذا الدليل الأداة الرئيسية لهذا الغرض والتي سيتم استخدامها من قبل اللجنة الفنية التي ستقيم 
+		مقتـرحات المشاريع المقدمة حسب معايير.</p>
+    </div>
+<% else %>
+  <% active_grant_id=Grant.active_grant_id %>
+  <% unless active_grant_id==-1 %>
+    <% grant=Grant.find(active_grant_id) %>
+    <div class="row">
+      <% if current_user.user_type != 'U' %>
+        <div class="col-xs-12 col-sm-6">
+      <% else %>
+        <div class="col-xs-12 col-sm-12">
+      <% end %>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h5>المنحة الفعالة:</h5>
+                    <p><%= grant.description %></p>
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-briefcase fa-xs"></i>
+                  </div>
+                  <% if current_user.is_admin? %>
+                  <a href="<%= grant_path(active_grant_id) %>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                  <% end %>
+                </div>
+              </div>
+            <% if grant.proposal_period? %>
+            <div class="col-xs-12 col-sm-6">
+              <div class="small-box bg-maroon">
+                <div class="inner">
+                  <h5>آخر موعد لتقديم المقترحات:</h5>
+                  <p><%= local_date(grant.closing_at, '%B %e, %Y') %></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <% if current_user.is_admin? %>
+                  <a href="<%= edit_grant_path(active_grant_id) %>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <% end %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+          <% if current_user.is_admin? %>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="small-box bg-teal">
+                <div class="inner">
+                  <h5>عدد المقترحات:</h5>
+                  <p><%= Proposal.proposals_count(active_grant_id) %></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-files-o"></i>
+                </div>
+                <% if current_user.is_admin? or current_user.is_eval? %>
+                <a href="/proposals" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <% end %>
+              </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+              <div class="small-box bg-olive">
+                <div class="inner">
+                  <h5>عدد المقترحات المسلّمة:</h5>
+                  <p><%= Proposal.submitted_proposals_count(active_grant_id) %></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-files-o"></i>
+                </div>
+                <% if current_user.is_admin? or current_user.is_eval? %>
+                <a href="/proposals" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <% end %>
+              </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h5>عدد المقيّمين:</h5>
+                  <p><%= User.users_count('E') %></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-users"></i>
+                </div>
+                <% if current_user.is_admin? %>
+                <a href="/users" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="small-box bg-olive">
+                <div class="inner">
+                  <h5>عدد التقييمات:</h5>
+                  <p><%= Proposal.assessed_proposals_count(active_grant_id) %></p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </div>
+                <a href="/proposals" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div> 
+          </div>
+          <% end %>
+      </div>
+      <% if current_user.user_type != 'U' %>
+      <div class="col-xs-12 col-sm-6">
+        <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+        <% if current_user.is_admin? %>
+          <div class="div-graph" style="width: 100%; height: 400px;">
+            <h1>&nbsp;<i class="fa fa-signal"></i> عدّاد جميع المقترحات </h1>
+            <div>
+              <%= column_chart @proposals_all.group("created_at").count if @proposals_all.present? %>
+            </div>
+          </div>
+        <% end %>
+        <% if current_user.is_eval? %>
+          <div class="row div-graph no-padding" style="width: 100%; height: 400px;">
+            <h1>&nbsp;<i class="fa fa-calendar-check-o"></i> عدد المقترحات التي تمّ تقييمها</h1>
+              <div><%= column_chart @proposals_eval.group("updated_at").count %></div>
+          </div>
+        <% end %>
+      </div>  
+      <% end %>
+    </div> <!-- row -->
+  <% else %>
+    <h2 style="font-family: 'Droid Arabic Kufi';">لا توجد منحة فعالة</h2>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+  <% end %>
+<% end %>

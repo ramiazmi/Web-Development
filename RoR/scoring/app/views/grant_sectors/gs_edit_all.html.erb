@@ -1,0 +1,48 @@
+<div class="jumbotron">
+    <h2><i class="fa fa-table"></i> النسب الفعلية للقطاعات</h2>
+</div>
+<% unless @grant_sectors.blank? %>
+<%= form_for :grant_sector, :url => gs_update_all_path, :html => { :method => :put, :remote => true } do %>
+<ul class="errors" style="color: red;"></ul>
+<table class="table table-striped table-hover">
+    <tr>
+      <th>القطاع</th>
+      <th>النسبة الفعلية</th>
+    </tr>
+    <%  @@grant_id=@grant_id 
+        @grant_sectors.each do |grant_sector| %>
+      <%= fields_for "grant_sector[]", grant_sector do |grant_sector_fields| %>
+    <tr>
+      <td><%= Sector.find(grant_sector.sector_id).programme %></td>
+      <td><%= grant_sector_fields.text_field :percentage, :class => 'form-control', :style => 'width: 25%;' %></td>
+    </tr>
+      <% end %>
+    <% end %>
+    <tr>
+      <td>
+        المجموع:
+      </td>
+      <td>
+        <div class="col-sm-6">
+          <div id="total_percentages_div">
+          <h4><%= render :partial => 'sum' %></h4>
+          </div>
+        </div> 
+        <div class="col-sm-6">
+          <div class="actions">
+          <%= submit_tag "حفظ التعديلات", class: 'btn btn-info' do %>
+          Save
+          <span class="fa fa-plus-circle" />
+        <% end %> 
+        </div>
+        </div> 
+        
+        
+      </td>
+    </tr>
+  </table>
+<% end %>
+<% else %>
+      <br>
+      <p class="error_explanation">لا توجد منحة فعالة!</p>
+<% end %>

@@ -1,0 +1,29 @@
+<%- model_class = Proposal -%>
+<div class="jumbotron">
+    <h2><span class="fa fa-sort-amount-desc"></span> تقرير المقترحات مرتبة حسب المحافظات</h2>
+</div>
+
+<table class="table table-striped table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>اسم المشروع</th>
+      <th>المؤسسة المنفذة</th>
+      <th>القطاع</th>
+      <th>الهدف التنموي</th>
+      <th>الميزانية</th>
+      <th>عدد المحافظات</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @proposals.each do |proposal| %>
+      <tr>
+          <td><%= link_to proposal.project_name, proposal_path(proposal.proposal_id) %></td>
+          <td><%= proposal.executive_organization %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><%= proposal.province_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

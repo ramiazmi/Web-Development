@@ -1,0 +1,6 @@
+<div id="h3_div">
+    <% ac_t3=Assessment.where("proposal_id=? and user_id=? and mark is null and criterion_id in (11,12,13,14,15,16,21)",@@proposal_id,current_user.id).count(:criterion_id) 
+      fa_t3 = ac_t3>=1 ? "fa-calendar-times-o text-danger":"fa-calendar-check-o text-success"
+    %>
+    <i class="fa <%= fa_t3 %> fa-lg text-success pull-left"></i></h3>
+</div>

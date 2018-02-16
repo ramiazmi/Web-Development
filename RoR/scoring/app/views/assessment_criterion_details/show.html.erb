@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mark:</strong>
+  <%= @assessment_criterion_detail.mark %>
+</p>
+
+<p>
+  <strong>Criterion detail:</strong>
+  <%= @assessment_criterion_detail.criterion_detail_id %>
+</p>
+
+<p>
+  <strong>Assessment:</strong>
+  <%= @assessment_criterion_detail.assessment_id %>
+</p>
+
+<%= link_to 'Edit', edit_assessment_criterion_detail_path(@assessment_criterion_detail) %> |
+<%= link_to 'Back', assessment_criterion_details_path %>

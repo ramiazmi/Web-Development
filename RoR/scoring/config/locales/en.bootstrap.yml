@@ -1,0 +1,31 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+activerecord:
+    models:
+      role: ロール
+      user: ユーザー
+      programme: ポスト
+
+en:
+  breadcrumbs:
+    application:
+      root: "Index"
+    pages:
+      pages: "Pages"
+  helpers:
+    actions: "Actions"
+    links:
+      back: "رجوع"
+      cancel: "إلغاء"
+      confirm: "هل أنت متأكد؟"
+      confirmassesscomplete: "سيتم تأكيد عملية التقييم لهذا المقترح ولا يمكن التعديل لاحقا, استمرار؟"
+      confirmgrantdel: "سيتم إغلاق المنحة والاحتساب النهائي لتقييم المقترحات, استمرار؟"
+      confirmgrantreset: "إعادة تفعيل المنحة, استمرار؟"
+      destroy: "حذف"
+      new: "جديد"
+      edit: "تعديل"
+    titles:
+      edit: "تعديل %{model}"
+      save: "حفظ %{model}"
+      new: "جديد %{model}"
+      delete: "حذف %{model}"

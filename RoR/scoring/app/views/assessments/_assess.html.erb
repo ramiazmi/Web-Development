@@ -1,0 +1,59 @@
+                    <% 
+                       @@current_assessments.each do |assessment| %>
+                      <%= fields_for "assessment[]", assessment do |assessment_fields| %>
+                      <% if assessment.id.nil?
+                           @@proposal_id = params[:proposal_id]
+                         else
+                           @@proposal_id = assessment.proposal_id
+                         end 
+                         @proposal=Proposal.find(@@proposal_id) 
+                         criterion_id=assessment.criterion_id
+                         criterion_type=Criterion.find(criterion_id).criterion_type
+                         l_mark=CriterionDetail.where("criterion_id=?",criterion_id).first.weight unless criterion_type=='C'
+                         @@i+=1
+                         k=@@i
+                      %>
+                        <tr>
+                      
+                        <td>
+                          <strong>
+                            <%= Criterion.find(assessment.criterion_id).description %> 
+                          </strong>
+                          <small>
+                            <% if criterion_type == 'R' %>
+                              (مدى من 0-<%= l_mark.to_i %>)
+                            <% end %>
+                          </small>
+                        </td>
+
+                        <% @criterion_details=CriterionDetail.where("criterion_id=?",criterion_id).order(:weight) %>  
+
+                        <td>
+                        <% if criterion_type == 'C' %>  
+                        <%= assessment_fields.collection_select :mark, @criterion_details , :weight, :weight_with_description, {prompt: "اختر مقياسا"}, :class => 'form-control text-center', :disabled => @@view_only, :remote => true, :onChange=>"javascript: this.form.submit_button.click();" %>
+                        
+
+                        <% elsif criterion_type == 'R' %> 
+
+                        <%= assessment_fields.number_field :mark, :in => 0..l_mark, :step => 1, :disabled => @@view_only,:class => 'form-control', :remote => true, :onChange=>"javascript: this.form.submit_button.click();", :onClick=>"javascript: this.form.submit_button.click();" %>  
+
+                        <% elsif criterion_type == 'E' %>
+                        معادلة 
+                        <% elsif criterion_type == 'M' %> 
+                        
+                           
+                          <% @assessment=@@current_assessments.first %>  
+
+                        
+  <%= assessment_fields.collection_select "criterion_detail_ids",@criterion_details.order(:id),:id,:description,{},{ :id => "multi-criterions", :multiple => "multiple", :class => "multiselect-all", :disabled => @@view_only, :remote => true, :onChange=>"javascript: this.form.submit_button.click();" }%>
+
+
+
+
+                        <% end %>
+                      </td>
+
+
+                    </tr>
+                      <% end %>
+                    <% end %>

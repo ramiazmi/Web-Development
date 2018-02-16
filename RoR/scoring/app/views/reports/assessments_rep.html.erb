@@ -1,0 +1,89 @@
+<div class="jumbotron">
+    <h2><span class="fa fa-list-ol"></span> تقرير تقييم مؤسسة <%= @proposal.executive_organization %> </h2>
+</div>
+<% unless @sys_assessments.blank? %>
+<h3>العلامة النهائية:  <%= @proposal.average_mark %></h3>
+<hr>
+
+<h4>تقييم النّظام </h4>
+
+<table class="table table-striped table-condensed table-hover">
+<thead>
+  <tr>
+    <th>الفئة</th>
+    <th>المعيار</th>
+    <th>العلامة</th>
+  </tr>
+</thead>
+<tbody>
+  <% sum_1=0.0 %>
+  <% @sys_assessments.each do |assessment| %>
+    <tr>
+        <td><%= Category.find(assessment.category_id.to_i).description %></td>
+        <td><%= Criterion.find(assessment.criterion_id.to_i).description %></td>
+        <td><%= assessment.mark %></td>
+    </tr>
+    <% sum_1=sum_1+assessment.mark.to_f %>
+    <% end %>
+      <tr>
+          <td></td>
+          <td>المجموع: </td>
+          <td style="color: red;"><%= sum_1 %></td>
+          <td></td>
+          <td></td>
+      </tr> 
+</tbody>
+</table>
+<% end %>
+
+
+<br/>
+<hr>
+<br/>
+
+<% unless @eval_users.blank? %>
+<% @eval_users.each do |user| %>
+  <h4>المقيّم: </h4> 
+  <% if current_user.is_admin? %>
+    <%= link_to reset_eval_assessment_path(@proposal.id,user.id), :method => :patch, class: "btn btn-warning", style: "text-align: center;" do %>
+      <i class="fa fa-undo fa-lg"></i> 
+    <% end %>
+  <% end %>  <%= user.user_name %> 
+  <table class="table table-striped table-condensed table-hover">
+  <thead>
+    <tr>
+      <th>الفئة</th>
+      <th>المعيار</th>
+      <th>العلامة</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% @man_assessments=Assessment.joins(:criterion).where("proposal_id=? and user_id=? and criterions.criterion_type!='E'", @proposal_id, user.id).order(:category_id,:criterion_id)
+        sum_2=0.0
+      %>
+      <% unless @man_assessments.blank? %>
+      <% @man_assessments.each do |assessment| %>
+      <tr>
+          <td><%= Category.find(assessment.category_id).description %></td>
+          <td><%= Criterion.find(assessment.criterion_id).description %></td>
+          <td>
+            <% assessment_mark=assessment.criterion_id != 19 ? assessment.mark : AssessmentCriterionDetail.where("assessment_id=?",assessment.id).sum(:mark) %>
+            <%= assessment_mark %>
+          </td>
+      </tr>
+      <% sum_2=sum_2+assessment_mark.to_f %>
+      <% end %>
+      <tr>
+          <td></td>
+          <td>المجموع: </td>
+          <td style="color: red;"><%= sum_2 %></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <% end %>   
+  </tbody>
+  </table>
+  <% end %>
+<% end %>
+
+
