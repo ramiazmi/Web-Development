@@ -4,7 +4,9 @@ source 'https://rubygems.org'
 # gem 'rails', '4.2.1'
 gem 'rails', '4.2.4'
 
-gem 'mysql2', '~> 0.3.21' 
+# gem 'pg'
+# gem 'mysql2', '~> 0.3.20'
+gem 'sqlite3', '~> 1.3', '>= 1.3.11'
 
 gem 'rails_12factor', group: :production
 
@@ -48,6 +50,13 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'simple_form'
 
 # gem 'rmagick'
+
+# Rich Text Editor
+# gem 'tinymce-rails'
+# gem 'paperclip'
+# gem 'redactor-rails'
+# gem 'carrierwave'
+# gem 'mini_magick'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
