@@ -1,0 +1,66 @@
+<div class="container" style="overflow-x: hidden; width: 1040px;">
+	<div class="jumbotron">
+		<h2><i class="fa fa-line-chart"></i> إحصائيات المقترحات</h2>
+	</div>
+	<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+	<div class="row">
+		<div class="col-md-8">
+            <!-- Nav tabs -->
+            <div class="card">
+                <ul class="nav nav-tabs" role="tablist">     
+                    <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">جميع المقترحات</a></li>
+                    <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">المقترحات المسلمة</a></li>
+                </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">                                        
+                        <div role="tabpanel" class="tab-pane active" id="tab-1">
+							<div class="row">
+									<h1>القطاعات</h1>
+									<div class="col-md-10">
+										<%= pie_chart @proposal_sector_t1.group('sectors.programme').count %>
+									</div>
+								</div>
+								
+								<div class="row">
+									<h1>الأهداف التنموية</h1>
+									<div class="col-md-10">
+										<%= pie_chart @proposal_goal_t1.group('development_goals.description').count %>
+									</div>
+								</div>
+
+								<div class="row">
+									<h1>ميزانية المقترحات</h1>
+									<div class="col-md-10">
+										<%= line_chart @proposal_budget_t1.group(:project_name).sum(:cost), discrete: true %>
+									</div>
+								</div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="tab-2">
+						<div class="row">
+							<h1>القطاعات</h1>
+							<div class="col-md-10">
+								<%= pie_chart @proposal_sector_t2.group('sectors.programme').count %>
+							</div>
+						</div>
+						
+						<div class="row">
+							<h1>الأهداف التنموية</h1>
+							<div class="col-md-10">
+								<%= pie_chart @proposal_goal_t2.group('development_goals.description').count %>
+							</div>
+						</div>
+
+						<div class="row">
+							<h1>ميزانية المقترحات</h1>
+							<div class="col-md-10">
+								<%= line_chart @proposal_budget_t2.group(:project_name).sum(:cost), discrete: true %>
+							</div>
+						</div>
+                        </div>
+                                    
+                </div>
+			</div>                
+        </div>
+	</div>
+</div>

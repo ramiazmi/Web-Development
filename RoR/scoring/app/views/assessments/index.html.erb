@@ -1,0 +1,45 @@
+<%- model_class = Assessment -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:mark) %></th>
+      <th><%= model_class.human_attribute_name(:grant_id) %></th>
+      <th><%= model_class.human_attribute_name(:applicant_id) %></th>
+      <th><%= model_class.human_attribute_name(:category_id) %></th>
+      <th><%= model_class.human_attribute_name(:criterion_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @assessments.each do |assessment| %>
+      <tr>
+        
+        <td><%= link_to assessment.id, assessment_path(assessment) %></td>
+        <td><%= assessment.mark %></td>
+        <td><%= assessment.grant_id %></td>
+        <td><%= assessment.applicant_id %></td>
+        <td><%= assessment.category_id %></td>
+        <td><%= assessment.criterion_id %></td>
+        <td><%=l assessment.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_assessment_path(assessment), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      assessment_path(assessment),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_assessment_path,
+            :class => 'btn btn-primary' %>

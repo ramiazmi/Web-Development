@@ -1,0 +1,45 @@
+<%- model_class = Criterion -%>
+<div class="jumbotron">
+    <h2 style="font-family: 'Droid Arabic Kufi';">المعايير</h2>
+</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>الوصف</th>
+      <th>الفئة</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @criterions.each do |criterion| %>
+      <tr>
+        <td><%= link_to criterion.description, criterion_path(criterion) %></td>
+        <td><%= Category.find(criterion.category_id).description %></td>
+        <td>
+          <%= link_to  criterion_criterion_details_path(criterion), 
+                      :class => 'btn btn-xs btn-default', :style => "font-family: 'Droid Arabic Kufi'; font-size: 13px;" do %>
+           المقاييس<i class="fa fa-list-alt fa-lg"></i> 
+          <% end %>
+          &nbsp;&nbsp;&nbsp; 
+          <%= link_to edit_criterion_path(criterion) do %>
+          <i class="fa fa-edit fa-lg"></i>
+          <% end %>
+          &nbsp;&nbsp;&nbsp;  
+          <%= link_to criterion_path(criterion),
+                      :class => 'trash',
+                      :method => :delete, 
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } do %>
+                      <i class="fa fa-trash-o fa-lg"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to new_criterion_path,
+            :class => 'btn btn-info'  do %>
+            إضافة معييار جديد
+        <i class="fa fa-plus-circle"></i>
+<% end %> 
+

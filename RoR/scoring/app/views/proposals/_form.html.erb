@@ -1,0 +1,436 @@
+<%= simple_form_for @proposal, :remote => true, :html => { :class => "orm-horizontal proposal" } do |f| %>
+    <%   
+      @@proposal_id=@proposal.id
+      if controller_name=="proposals" and action_name=="new"
+        ck_color="#B0E0E6"
+        view_only=false unless !(@proposal.is_submitted)
+        header_title="مقترح جديد"
+      elsif controller_name=="proposals" and action_name=="edit"
+        ck_color="#B0E0E6"
+        view_only=false unless !(@proposal.is_submitted)
+        header_title="تعديل المقترح"
+      elsif controller_name=="proposals" and action_name=="show"
+        ck_color="#F0FFF0"
+        view_only=true
+        header_title="عرض المقترح فقط"
+      else controller_name=="proposals" and action_name=="show"
+        ck_color="#F0FFF0"
+        view_only=true
+        header_title="عرض المقترح فقط"
+      end
+      
+      active_grant_id=Grant.active_grant_id
+      unless active_grant_id==-1
+        grant=Grant.find(active_grant_id)
+      else
+        view_only=true
+      end  
+      @@view_only=view_only
+    %>
+<!-- ================================================== -->
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xs-12">
+            <% if @proposal.errors.any? %>
+              <div id="error_expl" class="panel panel-danger">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><%= pluralize(@proposal.errors.count, "error") %> prohibited this proposal from being saved:</h3>
+                </div>
+                <div class="panel-body">
+                  <ul>
+                  <% @proposal.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-9">
+        <div class="navbar navbar-inverse navbar-fixed-top-2" style="font-family: 'Droid Arabic Kufi'; font-size: 14px;">
+         <div class="container">
+            <div>
+              <div id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li><a href="#" style="color: yellow; font-size: 16px;"><%= header_title %></a></li>
+                  <li><a href="#section-1">معلومات عامة</a></li>
+                  <li><a href="#section-2">التغطية الجغرافية</a></li>
+                  <li><a href="#section-3">وصف المشروع</a></li>
+                  <li><a href="#section-4">المعلومات المالية</a></li>
+                  <li><a href="#section-5">جهة التنفيذ</a></li>
+                  <li><a href="#section-6">آثار المشروع</a></li>
+                  <li>
+                    <% if current_user.is_app? %> 
+                    <% if !(@proposal.is_submitted?)  %>
+                    <% unless (grant.evaluation_period?)%>  
+                    <% if view_only  %>
+                      <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_proposal_path(@proposal), :class => 'btn btn-success', style: "font-family: 'Droid Arabic Kufi'; font-size: 15px; margin: 5px;    height: 41px;
+    padding-bottom: 1px;
+    padding-top: 10px;" %> 
+                    <% else %>
+                        <%= f.submit "حفظ", :class => 'btn btn-primary btn-3x', style: "font-family: 'Droid Arabic Kufi'; font-size: 15px; margin: 5px;", id: "submit_form_up", name: "submit_form_up", :remote => true, :disabled => false %>
+                    <% end %>
+                  <% end %>
+                  <% end %>
+                  <% end %>  
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+        
+      </div>
+        </div> 
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+            <div id="section-1" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">معلومات عامة</h1>
+                <div class="row">
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :project_name, label: 'اسم المشروع', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_field :project_name, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:project_name]) %>
+                </div>
+                </div>
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :sector_id, label: 'القطاع', :class => 'control-label' %>
+                <div class="controls">
+                  <% @sectors = Sector.all.order(:id) %> 
+                  <%= f.collection_select :sector_id, @sectors , :id, :programme, {prompt: "اختر قطاعا"}, :class => 'form-control', :disabled => view_only %>
+                </div>
+                <%= error_span(@proposal[:sector_id]) %>
+                </div>
+                </div>
+                </div>
+                <div class="row">   
+                  <div class="col-xs-6" style="z-index: 1;">
+                    <div class="control-group">
+                      <%= f.label :expected_start_date, label: 'التاريخ المتوقع للبدء بالتنفيذ',  :class => 'control-label' %>
+                      <div class="input-group">
+                        <%= f.text_field :expected_start_date, :disabled => view_only,  :class => 'form-control datepicker input-small', "data-behaviour" => 'datepicker', :type => 'text' %><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      </div>
+                      <%= error_span(@proposal[:expected_start_date]) %>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="control-group">
+                    <%= f.label :project_period, label: 'مدة تنفيذ المشروع (بالأشهر)', :class => 'control-label' %>
+                    <div class="controls">
+                      <%= f.text_field :project_period, :type => :number, min: 1, :disabled => view_only, :class => 'form-control' %>
+                    </div>
+                    <%= error_span(@proposal[:project_period]) %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                  <%= f.label :project_background, label: 'خلفية ومبررات المشروع', :class => 'control-label' %>
+                  <div class="controls">
+                    <%= f.text_area :project_background, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                  </div>
+                  <%= error_span(@proposal[:project_background]) %>
+                  </div>
+                </div>
+                <div class="row"> 
+                  <div class="col-xs-12">
+                    <div class="control-group">
+                    <%= f.label :development_goal_id, label: 'الأهداف التنموية التي يعمل على تحقيقها (حسب الخطة التنموية الوطنية) ', :class => 'control-label' %>
+                    <div class="controls">
+                      <% @development_goals = DevelopmentGoal.all.order(:id) %> 
+                      <%= f.collection_select :development_goal_id, @development_goals , :id, :description, {prompt: "اختر هدفا"}, :class => 'form-control', :disabled => view_only %>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                  <div class="control-group">
+                  <%= f.label :project_aim, label: 'هدف/ أهداف المشروع التنموية', :class => 'control-label' %>
+                  <div class="controls">
+                    <%= f.text_area :project_aim, :class => 'form-control', :rows => 15, :disabled => view_only %>
+                  </div>
+                  <%= error_span(@proposal[:project_aim]) %>
+                  </div>
+                  </div>       
+                </div>
+                <div class="row">
+                <div class="col-xs-12">
+                <div class="control-group">
+                <%= f.label :target_audience, label: 'الفئة/ات المستهدفة', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :target_audience, :readonly => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:target_audience]) %>
+                </div>
+                </div> 
+                </div>  
+
+            </div>
+
+            <hr>
+
+            <div id="section-2" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">التغطية الجغرافية</h1>
+                <div class="row">
+                <div class="col-xs-6">
+                
+
+
+                </div>
+                <div class="col-xs-6">
+                </div>
+                </div>
+                <div id="add_geographic_coverage">
+                <%= render 'coverage' %>  
+                </div>  
+                </div>            
+                
+            <hr>
+            <div id="section-3" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">وصف مختصر لنشاطات (مكونات) المشروع</h1>
+
+                <div class="control-group">
+                <%= f.label :project_actions_description, label: 'وصف المشروع', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :project_actions_description, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:project_actions_description]) %>
+                </div>
+                <div class="control-group">
+                <%= f.label :stakeholders_choosing_method, label: 'اختيار المستفيدين و/أو المناطق الجغرافية', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :stakeholders_choosing_method, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:stakeholders_choosing_method]) %>
+                </div>
+                <div class="control-group">
+                <%= f.label :stakeholders_description, label: 'وصف لأصحاب المصلحة', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :stakeholders_description, :readonly => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:stakeholders_description]) %>
+                </div>
+                <div class="control-group">
+                  <%= f.label :project_approach, label: 'آلية التنفيذ', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :project_approach, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:project_approach]) %>
+                </div>
+                <div class="control-group">
+                <%= f.label :technical_methodology, label: 'المنهجية الفنية', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :technical_methodology, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:technical_methodology]) %>
+                </div>
+                <div class="control-group">
+                <%= f.label :logical_framework, label: 'مصفوفة الإطار المنطقي', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :logical_framework, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:logical_framework]) %>
+                </div>
+                <div class="control-group">
+                <%= f.label :supervision, label: 'الإشراف والتقييم', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :supervision, :disabled => view_only, :class => 'form-control', :rows => 15 %>
+                </div>
+                <%= error_span(@proposal[:supervision]) %>
+                </div>
+            </div>
+           
+            <hr>
+            <div id="section-4" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">المعلومات المالية</h1>
+
+                <div id="add_budget">
+                <%= render 'budget' %>  
+                </div>   
+                <br/>
+                <div id="add_fund">
+                <%= render 'fund' %>  
+                </div>     
+
+                <div class="control-group">
+                <%= f.label :project_sustainability, label: 'استدامة تشغيل المشروع ونتائجه', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :project_sustainability, :disabled => view_only, :class => 'form-control', :rows => 15, placeholder: "يرجى توضيح مصادر  وكيفية استدامة تشغيل المشروع ونتائجه" %>
+                </div>
+                <%= error_span(@proposal[:project_sustainability]) %>
+                </div>
+            </div>
+            <hr>
+            <div id="section-5" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">جهة التنفيذ المقترحة</h1>
+
+                <div class="row">
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :executive_organization, label: 'المؤسسة', :class => 'control-label' %>
+                <div class="controls">
+                <%= f.text_area :executive_organization, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:executive_organization]) %>
+                </div>
+                </div>
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :joint_ventures, label: 'جهات ذات علاقة (مشاركة في التنفيذ)', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :joint_ventures, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:joint_ventures]) %>
+                </div>
+                </div>
+                </div>
+                <div class="control-group">
+                <%= f.label :organization_experience, label: 'خبرة المؤسسة في مشاريع مشابهة', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :organization_experience, :disabled => view_only, :class => 'form-control', :rows => 15, :placeholder => "Enter text ..." %>
+                </div>
+                <%= error_span(@proposal[:organization_experience]) %>
+                </div>
+                <h3>معلومات الاتصال</h3>
+                <div class="row">
+                <div class="col-xs-4">
+                  <div class="control-group">
+                  <%= f.label :contact_person, label: 'اسم الشخص', :class => 'control-label' %>
+                  <div class="controls">
+                    <%= f.text_field :contact_person, :disabled => view_only, :class => 'form-control' %>
+                  </div>
+                  <%= error_span(@proposal[:contact_person]) %>
+                  </div>
+                </div>      
+                <div class="col-xs-4">    
+                <div class="control-group">
+                <%= f.label :contact_phone, label: 'رقم الهاتف', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_field :contact_phone, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:contact_phone]) %>
+                </div>
+                </div>
+          
+                <div class="col-xs-4">    
+                <div class="control-group">
+                <%= f.label :contact_email, label: 'البريد الإلكتروني', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.email_field :contact_email, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:contact_email]) %>
+                </div>
+                </div>
+                </div>
+            </div>    
+ 
+            <hr>
+            <div id="section-6" class="container-fluid">
+                <h1 style="font-family: 'Droid Arabic Kufi'; font-size: 16px">الآثار المتوقعة لتنفيذ المشروع (يفضل أن تكون محددة وكمية)</h1> 
+                <div class="row">
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :positive_impact, label: 'آثار إيجابية', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :positive_impact, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:positive_impact]) %>
+                </div>
+                </div>        
+                <div class="col-xs-6">    
+                <div class="control-group">
+                <%= f.label :negative_impact, label: 'آثار سلبية', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :negative_impact, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:negative_impact]) %>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="col-xs-6">
+                <div class="control-group">
+                <%= f.label :short_term_work_opportunities, label: 'عدد فرص العمل على المدى القصير', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_field :short_term_work_opportunities, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:short_term_work_opportunities]) %>
+                </div>
+                </div>        
+                <div class="col-xs-6">    
+                <div class="control-group">
+                <%= f.label :long_term_work_opportunities, label: 'عدد فرص العمل على المدى الطويل', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_field :long_term_work_opportunities, :disabled => view_only, :class => 'form-control' %>
+                </div>
+                <%= error_span(@proposal[:long_term_work_opportunities]) %>
+                </div>
+                </div>
+                </div>
+
+                <div class="control-group">
+                <%= f.label :project_schedule, label: 'الجدول الزمني للمشروع', :class => 'control-label' %>
+                <div class="controls">
+                  <%= f.text_area :project_schedule, :disabled => view_only,  :id => "some-textarea", :class => 'form-control', :rows => 20, :placeholder => "Enter text here ..." %>
+
+                </div>
+                <%= error_span(@proposal[:project_schedule]) %>
+                </div>
+
+
+            <hr>
+            </div>
+        </div>
+        </div>
+
+        <% if current_user.is_app? %> 
+        <% if !(@proposal.is_submitted?)  %>
+        <div class="row">
+            <div class="col-md-4">
+            <% unless (grant.evaluation_period?)%>     
+            <% if view_only  %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_proposal_path(@proposal), :class => 'btn btn-default', style: "font-family: 'Droid Arabic Kufi'; font-size: 15px" %>  
+            <% else %>
+                <%= f.submit "حفظ", :class => 'btn btn-primary btn-block', id: "submit_form", name: "submit_form", :remote => true, :disabled => false %>
+            <% end %>
+            <% end %>
+            </div>
+            <div class="col-md-8"> 
+              <% if !view_only  %>  
+                <div class="funkyradio funkyradio-info" >
+                  <%= f.check_box :is_submitted, :id => 'enable_submit', :remote => true %>
+                  <%= f.label :is_submitted, "أقر بصحة المعلومات المذكورة في المقترح", :for => "enable_submit" %>
+                </div> 
+              <% end %> 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"> 
+               <% if !view_only  %>
+                <%= f.submit "تسليم المقترح", :id => 'my_submit', :class => 'btn btn-block btn-danger', style: "font-family: 'Droid Arabic Kufi'; font-size: 15px; width: 25%; float: left;", name: "my_submit", :remote => true, :disabled => true %>
+               <% end %> 
+            </div>    
+        </div>  
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="add_errors">
+                    <%= render 'errors' %>  
+                </div>
+            </div> 
+        </div>
+
+        <% end %>
+        <% end %>          
+</div>
+<% end %>

@@ -1,0 +1,2 @@
+module GeographicCoveragesHelper
+end

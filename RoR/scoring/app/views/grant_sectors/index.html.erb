@@ -1,0 +1,24 @@
+<%- model_class = GrantSector -%>
+<div class="page-header">
+  <h1>قطاعات المنحة</h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>المنحة</th>
+      <th>القطاع</th>
+      <th>نسبة القطاع</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% i=0 %>
+    <% @grant_sectors.each do |grant_sector| %>
+      <tr>
+        <td><%= link_to Grant.find(grant_sector.grant_id).description, grant_path(grant_sector.grant_id) unless i>=1 %> </td>
+        <td><%= link_to Sector.find(grant_sector.sector_id).programme, sector_path(grant_sector.sector_id) %></td>
+        <td><%= grant_sector.percentage %></td>
+        <% i=i+1 %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

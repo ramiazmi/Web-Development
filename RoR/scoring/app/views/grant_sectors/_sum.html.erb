@@ -1,0 +1,8 @@
+
+  <% 
+    tot_percent=0
+    tot_percent=GrantSector.where("grant_id=?",@@grant_id).sum(:percentage) unless @@grant_id==-1
+  %>
+      <p>
+        <%= h(tot_percent) %> 
+      </p>  

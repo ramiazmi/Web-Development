@@ -1,0 +1,2 @@
+module ProposalAssessmentSummariesHelper
+end

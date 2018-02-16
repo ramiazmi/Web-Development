@@ -1,0 +1,291 @@
+<%= form_for :assessment, :url => update_all_path, :remote => true, :html => { :method => :put, :class => 'form-horizontal',role: 'form' } do %>
+            <% 
+              grant_id=Grant.active_grant_id
+              @@proposal_id=params[:proposal_id]
+              @proposal=Proposal.find(@@proposal_id)
+              proposal_assessment_summary=ProposalAssessmentSummary.where("proposal_id=? and user_id=?", @@proposal_id, current_user.id).first
+              @@i=0
+            
+              if proposal_assessment_summary.is_assessed
+                @@view_only=true
+              else
+                @@view_only=false
+              end
+            %>
+            <div class="jumbotron">
+                <h2><i class="fa fa-check-square-o"></i> تقييم مقترح مؤسسة <b><%= @proposal.executive_organization %></b></h2>
+            </div>
+            <div style="font-size: 27px;">  
+              <% unless grant_id==-1%>
+                <strong>المنحة: </strong><%= Grant.find(grant_id).description %>
+              <% end %>
+            </div>
+<% if 1==2 %> 
+<div name="header" class="panel panel-info">
+    <div class="panel-heading clickable">
+        <% ac_t1=Assessment.where("proposal_id=? and user_id=? and mark is null and criterion_id in (10,18)",@@proposal_id,current_user.id).count(:criterion_id) 
+          fa_t1 = ac_t1>=1 ? "fa-calendar-times-o text-danger":"fa-calendar-check-o text-success"
+        %>
+        <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+            تقييم المعلومات العامة للمقترح</h3><%= render :partial => 'h1' %> 
+    </div> 
+    <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-3" >
+              اسم المشروع
+            </div>
+            <div class="col-xs-6">
+              <%= @proposal.project_name %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" style="font-family: 'Droid Arabic Kufi';" >
+              اسم القطاع
+            </div>
+            <div class="col-xs-6">
+              <%= Sector.find(@proposal.sector_id).programme %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" >
+              خلفية ومبررات المشروع
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.project_background) %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" style="font-family: 'Droid Arabic Kufi';" >
+              مدة تنفيذ المشروع (بالأشهر)
+            </div>
+            <div class="col-xs-6">
+              <%= @proposal.project_period %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" style="font-family: 'Droid Arabic Kufi';" >
+              هدف/ أهداف المشروع التنموية
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.project_aim) %>
+            </div>
+          </div> 
+          <hr> 
+          <div class="row">
+            <div class="col-xs-3" style="font-family: 'Droid Arabic Kufi';" >
+              الأهداف التنموية التي يعمل على تحقيقها (حسب الخطة التنموية الوطنية)
+            </div>
+            <div class="col-xs-6">
+              <%= DevelopmentGoal.find(@proposal.development_goal_id).description %>
+            </div>
+          </div> 
+          <hr>                      
+      <table class="table table-condensed table-hover table-bordered">
+        <tr>
+          <th class="bg-success" style="text-align:center">المعيار</th>
+          <th class="bg-success" style="text-align:center">المقياس</th>
+        </tr>
+          <!--  -->
+           <% 
+            @@current_assessments=@assessments_s1
+          %>
+          <%= render :partial => 'assess' %>
+          <!--  -->
+      </table>
+    </div>
+  </div>
+  <% end %>
+
+  <div name="header" class="panel panel-info">
+        <div class="panel-heading clickable">
+            <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+                تقييم الانكشاف</h3><%= render :partial => 'h2' %>  
+        </div>
+        <div class="panel-body">
+          <div>
+            <%= render :partial => 'geographic_coverages/index' %> 
+          </div>  
+          <hr>  
+          <table class="table table-condensed table-hover table-bordered">
+            <tr>
+              <th class="bg-success" style="text-align:center">المعيار</th>
+              <th class="bg-success" style="text-align:center">المقياس</th>
+            </tr>
+            <!--  -->
+            <% 
+              @@current_assessments=@assessments_s2
+            %>
+            <%= render :partial => 'assess' %> 
+            <!--  -->
+          </table>
+      </div>
+  </div>
+
+  <div name="header" class="panel panel-info">
+        <div class="panel-heading clickable panel-collapsed">
+            <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+                تقييم جودة المقترح</h3><%= render :partial => 'h3' %>
+        </div> 
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-3" >
+              جهات ذات علاقة (مشاركة في التنفيذ) 
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.joint_ventures) %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" >
+              خبرة المؤسسة في مشاريع مشابهة
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.organization_experience) %>
+            </div>
+          </div>
+          <hr>
+            <table class="table table-condensed table-hover table-bordered">
+            <tr>
+              <th class="bg-success" style="text-align:center">المعيار</th>
+              <th class="bg-success" style="text-align:center">المقياس</th>
+            </tr>
+          <!--  -->
+          <% 
+            @@current_assessments=@assessments_s3
+          %>
+          <%= render :partial => 'assess' %> 
+          <!--  -->
+          </table>
+      </div>
+  </div>
+
+  <div name="header" class="panel panel-info">
+        <div class="panel-heading clickable panel-collapsed">
+            <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+                تقييم الكفاءة المالية
+              </h3><%= render :partial => 'h4' %>
+        </div> 
+        <div class="panel-body">
+          <div>
+            <%= render :partial => 'funds/index' %> 
+          </div> 
+          <div>
+            <%= render :partial => 'budgets/index' %> 
+          </div> 
+          <div class="row">
+            <div class="col-xs-3" >
+              استدامة تشغيل المشروع ونتائجه
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.project_sustainability) %>
+            </div>
+          </div>
+          <hr>
+         <table class="table table-condensed table-hover table-bordered">
+            <tr>
+              <th class="bg-success" style="text-align:center">المعيار</th>
+              <th class="bg-success" style="text-align:center">المقياس</th>
+            </tr>
+          <!--  -->
+          <% 
+            @@current_assessments=@assessments_s4
+          %>
+          <%= render :partial => 'assess' %> 
+          <!--  -->
+          </table>
+    </div>
+  </div>
+
+  <% if 1==2 %>
+  <div name="header" class="panel panel-info">
+        <div class="panel-heading clickable panel-collapsed">
+            <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+                تقييم جهة التنفيذ المقترحة</h3><%= render :partial => 'h5' %>
+        </div> 
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-3" >
+              جهات ذات علاقة (مشاركة في التنفيذ) 
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.joint_ventures) %>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-3" >
+              خبرة المؤسسة في مشاريع مشابهة
+            </div>
+            <div class="col-xs-6">
+              <%= simple_format(@proposal.organization_experience) %>
+            </div>
+          </div>
+          <hr>
+          <table class="table table-condensed table-hover table-bordered">
+            <tr>
+              <th class="bg-success" style="text-align:center">المعيار</th>
+              <th class="bg-success" style="text-align:center">المقياس</th>
+            </tr>
+          <!--  -->
+          <% 
+            @@current_assessments=@assessments_s5
+          %>
+          <%= render :partial => 'assess' %> 
+          <!--  -->
+          </table>
+      </div>
+  </div>
+  <% end %>
+
+  <div name="header" class="panel panel-info"> 
+        <div class="panel-heading clickable panel-collapsed">
+          <h3 class="panel-title"><span class="clickable"><i class="fa fa-minus"></i></span>
+                تقييم الآثار المتوقعة لتنفيذ المشروع</h3><%= render :partial => 'h6' %>
+        </div>
+        <div class="panel-body">
+         <table class="table table-condensed table-hover table-bordered">
+            <tr>
+              <th class="bg-success" style="text-align:center">المعيار</th>
+              <th class="bg-success" style="text-align:center">المقياس</th>
+            </tr>
+            <!--  -->
+            <% 
+              @@current_assessments=@assessments_s6
+            %>
+            <%= render :partial => 'assess' %> 
+            <!--  -->
+          </table>  
+      </div>
+  </div>
+
+  <div class="actions pull-left">
+      <%= submit_tag 'حفظ', :name => "submit_button", :class => 'btn btn-info', :remote => true, :style => 'display: none;' %> 
+
+      <%= link_to 'رجوع', proposals_path, :class => 'btn btn-default' %>
+
+      <% if current_user.is_eval? %> 
+        <%= link_to "معاينة المقترح", proposal_path(@proposal.id), :target => "_blank", :class => 'btn btn-info' %>
+
+        <%  @proposal_assessment_summary=ProposalAssessmentSummary.where("proposal_id=? and user_id=?", @proposal.id,  current_user.id).first
+            if !(@proposal_assessment_summary.is_assessed) %>
+        <%= link_to complete_assessment_path(@proposal.id), :class => 'btn btn-danger', method: :patch, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirmassesscomplete", :default => 'Are you sure?')) } do %>
+                      تأكيد عملية التقييم<i style="opacity: 0.5;" class="fa fa-check-square-o"></i>
+                    <% end %>
+        <% end %>
+
+      <% end %>   
+  </div>
+
+  <div class="panel panel-info" style="position:fixed; padding:2px; text-align: center; left:17px; top: 68px; font-size= 20px;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="height: 30px;">
+                            المجموع <%= render :partial => 'sum' %></h3>
+                    </div>
+  </div> 
+<% end %>
+

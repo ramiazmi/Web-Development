@@ -1,0 +1,70 @@
+<style type="text/css">
+.sidebar .sidebar-menu .treeview-menu > li:hover {
+    background-color: #abd7f1;
+}
+</style>
+<!-- Left side column. contains the logo and sidebar -->
+<% if current_user.is_admin? %>
+    <aside class="left-side sidebar-offcanvas">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+              <a href="#" style="font-size: 14px;"><i class="fa fa-circle text-success"></i> <%= current_user.user_name %></a>
+          </div>
+            <!-- search form -->
+            <form action="<%= controller_name=='registrations'?'users':controller_name %>" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" id="search" placeholder="وضع نص البحث هنا ... ">
+                    <span class="input-group-btn">
+                        <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <!-- Main Menu -->
+            <ul class="sidebar-menu" style="font-family: 'Droid Arabic Kufi'; font-size: 15px">
+                <!-- Dropdown 0-->
+                <li class="treeview">                        
+                    <a href="#">
+                            <i class="fa fa-cogs fa-lg"></i> <span>&nbsp;إعدادات عامة</span>
+                            <i class="fa fa-angle-left pull-left"></i>
+                    </a>
+                     <ul class="treeview-menu" style="font-family: 'Droid Arabic Kufi'; font-size: 15px">
+                    <li class='active'><a href="/sectors"><span class="fa fa-angle-double-left"></span>   القطاعات</a></li>
+                    <li class='active'><a href="/development_goals"><span class="fa fa-angle-double-left"></span>   الأهداف التنموية</a></li>
+                    <li class='active'><a href="/provinces"><span class="fa fa-angle-double-left"></span>   المحافظات</a></li>
+                    <li class='active'><a href="/localities"><span class="fa fa-angle-double-left"></span>   التجمعات السكانية</a></li>
+                    </ul>
+                </li>
+                <!-- Dropdown 1-->
+                <li class="treeview" >
+                    <a href="#">
+                            <i class="fa fa-university fa-lg"></i> <span>&nbsp;إعدادت المنح</span>
+                            <i class="fa fa-angle-left pull-left"></i>
+                    </a>
+                    <ul class="treeview-menu" >
+                        <li class='active'><a href="/grants"><i class="fa fa-angle-double-left"></i> قائمة المنح</a></li>
+                        <li class='active'><a href="/active_grant_sectors/all/gs_edit"><i class="fa fa-angle-double-left"></i> قطاعات المنحة الفعالة</a></li>
+                    </ul>
+                </li>
+                <!-- Dropdown 2-->
+                <li class="treeview" >
+                    <a href="#" >
+                            <i class="fa fa-th-list fa-lg"></i> <span>&nbsp;معايير التقييم</span>
+                            <i class="fa fa-angle-left pull-left"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class='active'><a href="/categories"><i class="fa fa-angle-double-left"></i> الفئات</a></li>
+                        <li class='active'><a href="/criterions"><i class="fa fa-angle-double-left"></i> المعايير والمقاييس</a></li>
+                    </ul>
+                </li>
+                <li><a href="/proposals"><i class="fa fa-file-text-o fa-lg"></i>  المقترحات</a></li>
+                <li><a href="/reports"><i class="fa fa-pie-chart fa-lg"></i>  تقارير وإحصائيات</a></li>
+                <li><a href="/users"><i class="fa fa-users fa-lg"></i>  ملف المستخدمين</a></li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+<% end %>

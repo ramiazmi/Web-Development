@@ -1,0 +1,38 @@
+<%- model_class = Category -%>
+<div class="jumbotron">
+    <h2 style="font-family: 'Droid Arabic Kufi';">الفئات</h2>
+</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th> الوصف</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= link_to category.description, category_path(category) %></td>
+        <td>
+          <%= link_to edit_category_path(category) do %>
+          <i class="fa fa-edit fa-lg"></i>
+          <% end %>
+          &nbsp;&nbsp;&nbsp;  
+          <%= link_to category_path(category),
+                      :class => 'trash',
+                      :method => :delete, 
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } do %>
+                      <i class="fa fa-trash-o fa-lg"></i>
+          <% end %>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to new_category_path,
+            :class => 'btn btn-info'  do %>
+            إضافة فئة جديدة
+        <i class="fa fa-plus-circle"></i>
+<% end %>  

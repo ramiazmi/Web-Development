@@ -1,0 +1,9 @@
+$("ul.errors").html("")
+<% if @errors %>
+	<% puts "Errors:::: ", @errors %>
+    $("ul.errors").append($("<li/>").html("<%= @errors.html_safe %>"));
+<% else %>
+	$('#total_percentages_div').fadeOut("slow");
+	$("#total_percentages_div").html("<%= escape_javascript(render :partial => 'sum') %>");
+	$('#total_percentages_div').fadeIn("slow");
+<% end %>

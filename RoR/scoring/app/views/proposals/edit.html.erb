@@ -1,0 +1,5 @@
+<%= render 'form' %>
+<% if current_user.user_type=='A' %>
+	<%= link_to 'Show', @proposal %> |
+	<%= link_to 'Back', proposals_path %>
+<% end %>
