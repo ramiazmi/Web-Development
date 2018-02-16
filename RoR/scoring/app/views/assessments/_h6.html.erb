@@ -1,6 +1,0 @@
-<div id="h6_div">
-<% ac_t6=AssessmentCriterionDetail.where("assessment_criterion_details.assessment_id=(select b.id from assessments b where b.proposal_id=? and b.criterion_id=19 and b.user_id=?)",@@proposal_id, current_user.id).sum(:mark)
-                        fa_t6 = ac_t6<1 ? "fa-calendar-times-o text-danger":"fa-calendar-check-o text-success"
-                      %>
-<i class="fa <%= fa_t6 %> fa-lg text-success pull-left"></i>
-</div>

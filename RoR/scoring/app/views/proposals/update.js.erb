@@ -1,9 +1,0 @@
-$("#add_geographic_coverage").html("<%= escape_javascript(render :partial => 'coverage') %>")
-$("#add_budget").html("<%= escape_javascript(render :partial => 'budget') %>")
-$("#add_fund").html("<%= escape_javascript(render :partial => 'fund') %>")
-
-<% if @proposal.is_submitted? %>
-	$(window.location.replace("/proposals/<%= @proposal.id %>"));	
-<% else %> 
-	$("#add_errors").html("<%= escape_javascript(render :partial => 'errors') %>")
-<% end %> 		  
