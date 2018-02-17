@@ -20,12 +20,14 @@
           <%= link_to edit_province_path(province) do %>
           <i class="fa fa-edit fa-lg"></i>
           <% end %>
-          &nbsp;&nbsp;&nbsp;  
-          <%= link_to province_path(province),
-                      :class => 'trash',
-                      :method => :delete, 
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } do %>
-                      <i class="fa fa-trash-o fa-lg"></i>
+          <% if 1 == 2 %>
+            &nbsp;&nbsp;&nbsp;  
+            <%= link_to province_path(province),
+                        :class => 'trash',
+                        :method => :delete, 
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) } do %>
+                        <i class="fa fa-trash-o fa-lg"></i>
+            <% end %>
           <% end %>
         </td>
       </tr>
