@@ -1,6 +1,6 @@
 adminUsers = User.all
 
-if adminUsers.size == 0
+if adminUsers.count == 0
 	u1 = User.new(id: 1, email: "admin@isdb.org", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_type: "A", email_confirmed: 0, user_name: "Administrator")
 	u1.save!(validate: false)
 
@@ -13,7 +13,7 @@ provinces=Province.all
 # provinces.each do |province|
 # 	puts "Province.create(:id => #{province.id}, :name => '#{province.name}', :poverty_mapping => '#{province.poverty_mapping}')"
 # end
-if Province.size == 0
+if Province.count == 0
 	Province.create(:id => 1, :name => 'القدس', :poverty_mapping => '4.0')
 	Province.create(:id => 2, :name => 'الخليل', :poverty_mapping => '4.0')
 	Province.create(:id => 3, :name => 'غزة', :poverty_mapping => '4.0')
@@ -36,7 +36,7 @@ localities=Locality.all
 # localities.each do |locality|
 # 	puts "Locality.create(:id => #{locality.id}, :locality_code => '#{locality.locality_code}', :locality_name => '#{locality.locality_name}', :population => '#{locality.population}', :Locality_id => '#{locality.Locality_id}')"
 # end
-if localities.size == 0
+if localities.count == 0
 Locality.create(:id => 1, :locality_code => '﻿10005', :locality_name => 'زبوبه', :population => '1898.0', :Locality_id => '10')
 Locality.create(:id => 2, :locality_code => '10010', :locality_name => 'رمانة', :population => '3081.0', :Locality_id => '10')
 Locality.create(:id => 3, :locality_code => '10015', :locality_name => 'تعنك', :population => '981.0', :Locality_id => '10')
