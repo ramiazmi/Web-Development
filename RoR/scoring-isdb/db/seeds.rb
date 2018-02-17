@@ -1,13 +1,136 @@
 adminUsers = User.all
-
 if adminUsers.count == 0
 	u1 = User.new(id: 1, email: "admin@isdb.org", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_type: "A", email_confirmed: 0, user_name: "Administrator")
 	u1.save!(validate: false)
-
 	u2 = User.new(id: 2, email: "raedazmi@gmail.com", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_type: "E", email_confirmed: 0, user_name: "Raed Azmi")
 	u2.save!(validate: false)
 end
 
+sectors = Sector.all
+# sectors.each do |sector|
+# 	puts "Sector.create(:id => #{sector.id}, :programme => '#{sector.programme}', :percentage => '#{sector.percentage}', :is_active => '#{sector.is_active}')"
+# end
+if sectors.count == 0
+	Sector.create(:id => 1, :programme => 'مدينة القدس الشريف', :percentage => '25', :is_active => 'true')
+	Sector.create(:id => 2, :programme => 'التمكين الاقتصادي للأسر الفقيرة', :percentage => '20', :is_active => 'false')
+	Sector.create(:id => 3, :programme => 'التنمية الريفية في مناطق "ج"', :percentage => '25', :is_active => 'false')
+	Sector.create(:id => 4, :programme => 'التعليم', :percentage => '10', :is_active => 'false')
+	Sector.create(:id => 5, :programme => 'تقوية مؤسسات بناء الدولة', :percentage => '8', :is_active => 'false')
+	Sector.create(:id => 6, :programme => 'مؤسسات المجتمع المدني', :percentage => '7', :is_active => 'false')
+	Sector.create(:id => 7, :programme => 'أخرى', :percentage => '5', :is_active => 'true')
+end
+
+design_readinesses = DesignReadiness.all
+# design_readinesses.each do |design_readiness|
+# 	puts "DesignReadiness.create(:id => #{design_readiness.id}, :description => '#{design_readiness.description}', :is_active => '#{design_readiness.is_active}')"
+# end
+if design_readinesses.count == 0
+	DesignReadiness.create(:id => 1, :description => 'جاهزة', :is_active => 'true')
+	DesignReadiness.create(:id => 2, :description => 'جاهزة جزئيا', :is_active => 'true')
+	DesignReadiness.create(:id => 3, :description => 'غير جاهزة', :is_active => 'true')
+end
+
+categories = Category.all
+# categories.each do |category|
+# 	puts "Category.create(:id => #{category.id}, :description => '#{category.description}', :is_active => '#{category.is_active}')"
+# end
+if categories.count == 0
+	Category.create(:id => 1, :description => 'الكفاءة المالية', :is_active => 'true')
+	Category.create(:id => 2, :description => 'التغطية الجغرافية', :is_active => 'true')
+	Category.create(:id => 3, :description => 'الانكشاف', :is_active => 'true')
+	Category.create(:id => 4, :description => 'جودة المقترح', :is_active => 'true')
+	Category.create(:id => 5, :description => 'منسجم مع الخطة التنموية الوطنية', :is_active => 'true')
+	Category.create(:id => 6, :description => 'الأثر التنموي', :is_active => 'true')
+end
+
+criterions = Criterion.all
+# criterions.each do |criterion|
+# 	puts "Criterion.create(:id => #{criterion.id}, :description => '#{criterion.description}', :is_active => '#{criterion.is_active}', :category_id => '#{criterion.category_id}', :criterion_type => '#{criterion.criterion_type}')"
+# end
+if criterions.count == 0
+	Criterion.create(:id => 11, :description => 'يوجد آلية لاختيار المستفيدين', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 12, :description => 'يوجد مصفوفة الاطار المنطقي', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 13, :description => 'يوجد خطة عمل', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 14, :description => 'يوجد وصف للمشكلة', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 15, :description => 'يوجد وصف لاصحاب المصلحة', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 16, :description => 'يوجد منهجية فنية', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 17, :description => 'خبرة المؤسسة في مشاريع مشابهة', :is_active => 'true', :category_id => '4', :criterion_type => 'R')
+	Criterion.create(:id => 18, :description => 'يخدم احد الأهداف ضمن الخطة الوطنية حسب الجدول', :is_active => 'true', :category_id => '5', :criterion_type => 'R')
+	Criterion.create(:id => 19, :description => 'أثر المشروع على مخرجات سبل العيش وموارد الفئة المستهدفة', :is_active => 'true', :category_id => '6', :criterion_type => 'M')
+	Criterion.create(:id => 20, :description => 'نسبة المستفيدين من حجم عدد السكان', :is_active => 'true', :category_id => '6', :criterion_type => 'E')
+	Criterion.create(:id => 21, :description => 'مبادرة جديدة/زيادة الطاقة الاستيعابية', :is_active => 'true', :category_id => '6', :criterion_type => 'C')
+	Criterion.create(:id => 22, :description => 'عدد فرص التشغيل على المدى القصير', :is_active => 'true', :category_id => '6', :criterion_type => 'E')
+	Criterion.create(:id => 23, :description => 'عدد فرص التشغيل على المدى البعيد', :is_active => 'true', :category_id => '6', :criterion_type => 'E')
+end
+
+criterion_details = CriterionDetail.all
+# criterion_details.each do |criterion_detail|
+# 	puts "CriterionDetail.create(:id => #{criterion_detail.id}, :description => '#{criterion_detail.description}', :is_active => '#{criterion_detail.is_active}', :weight => '#{criterion_detail.weight}', :criterion_id => '#{criterion_detail.criterion_id}')"
+# end
+if criterion_details.count == 0
+	CriterionDetail.create(:id => 1, :description => 'ضمن الميزانية-معادلة', :is_active => 'true', :weight => '4.0', :criterion_id => '1')
+CriterionDetail.create(:id => 2, :description => 'لا يوجد ممول شريك', :is_active => 'true', :weight => '0.0', :criterion_id => '2')
+CriterionDetail.create(:id => 3, :description => 'نسبة تمويل مشترك أقل من 50%', :is_active => 'true', :weight => '2.0', :criterion_id => '2')
+CriterionDetail.create(:id => 4, :description => 'نسبة تمويل مشترك أقل من 50%', :is_active => 'true', :weight => '3.0', :criterion_id => '2')
+CriterionDetail.create(:id => 5, :description => '5 بنود أو أكثر', :is_active => 'true', :weight => '1.0', :criterion_id => '3')
+CriterionDetail.create(:id => 6, :description => '4 بنود', :is_active => 'true', :weight => '2.0', :criterion_id => '3')
+CriterionDetail.create(:id => 7, :description => '3 بنود أو أقل', :is_active => 'true', :weight => '3.0', :criterion_id => '3')
+CriterionDetail.create(:id => 8, :description => '5% أو أكثر', :is_active => 'true', :weight => '1.0', :criterion_id => '4')
+CriterionDetail.create(:id => 9, :description => '3% - 5%', :is_active => 'true', :weight => '2.0', :criterion_id => '4')
+CriterionDetail.create(:id => 10, :description => '1% - 2%', :is_active => 'true', :weight => '3.0', :criterion_id => '4')
+CriterionDetail.create(:id => 11, :description => 'لا يوجد استدامة', :is_active => 'true', :weight => '0.0', :criterion_id => '5')
+CriterionDetail.create(:id => 12, :description => 'استدامة جزئية', :is_active => 'true', :weight => '1.0', :criterion_id => '5')
+CriterionDetail.create(:id => 13, :description => 'استدامة كلية', :is_active => 'true', :weight => '2.0', :criterion_id => '5')
+CriterionDetail.create(:id => 14, :description => 'محافظة واحدة', :is_active => 'true', :weight => '1.0', :criterion_id => '6')
+CriterionDetail.create(:id => 15, :description => 'محافطتين اثنتين إلى ستة', :is_active => 'true', :weight => '2.0', :criterion_id => '6')
+CriterionDetail.create(:id => 16, :description => 'الضفة كاملة او قطاع غزة كاملا', :is_active => 'true', :weight => '3.0', :criterion_id => '6')
+CriterionDetail.create(:id => 17, :description => 'الضفة وغزة', :is_active => 'true', :weight => '4.0', :criterion_id => '6')
+CriterionDetail.create(:id => 18, :description => 'معادلة', :is_active => 'true', :weight => '4.0', :criterion_id => '7')
+CriterionDetail.create(:id => 19, :description => 'منطقة أ', :is_active => 'true', :weight => '1.0', :criterion_id => '8')
+CriterionDetail.create(:id => 20, :description => 'منطقة ب', :is_active => 'true', :weight => '2.0', :criterion_id => '8')
+CriterionDetail.create(:id => 21, :description => 'منطقة ج أو حدودية', :is_active => 'true', :weight => '4.0', :criterion_id => '8')
+CriterionDetail.create(:id => 22, :description => 'التصنيف الوطني لمنطقة السكن من حيث درجة الفقر-معادلة', :is_active => 'true', :weight => '2.0', :criterion_id => '9')
+CriterionDetail.create(:id => 23, :description => '4 مدى من', :is_active => 'true', :weight => '4.0', :criterion_id => '10')
+CriterionDetail.create(:id => 24, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '11')
+CriterionDetail.create(:id => 25, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '12')
+CriterionDetail.create(:id => 26, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '13')
+CriterionDetail.create(:id => 27, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '14')
+CriterionDetail.create(:id => 28, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '15')
+CriterionDetail.create(:id => 29, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '16')
+CriterionDetail.create(:id => 30, :description => '3 مدى من', :is_active => 'true', :weight => '3.0', :criterion_id => '17')
+CriterionDetail.create(:id => 31, :description => '5 مدى من', :is_active => 'true', :weight => '5.0', :criterion_id => '18')
+CriterionDetail.create(:id => 32, :description => 'الدخل', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 33, :description => 'النفاذ إلى التمويل الاسلامي', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 34, :description => 'تحسين جودة الخدمات الصحية', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 35, :description => 'التعليم والمهارات', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 36, :description => 'رأس المال الطبيعي والزراعي', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 37, :description => 'السكن', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 38, :description => 'الثروة الحيوانية', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 39, :description => 'البنية التحتية الاقتصادية المادية والبنية التحتية الاجتماعية', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 40, :description => 'آليات الدعم الاجتماعي', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 41, :description => 'المعلومات', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 42, :description => 'الصدمات والانتعاش', :is_active => 'true', :weight => '1.0', :criterion_id => '19')
+CriterionDetail.create(:id => 43, :description => '1% -20%', :is_active => 'true', :weight => '2.0', :criterion_id => '20')
+CriterionDetail.create(:id => 44, :description => '21% -40%', :is_active => 'true', :weight => '4.0', :criterion_id => '20')
+CriterionDetail.create(:id => 45, :description => '41% -60%', :is_active => 'true', :weight => '6.0', :criterion_id => '20')
+CriterionDetail.create(:id => 46, :description => '61% -80%', :is_active => 'true', :weight => '8.0', :criterion_id => '20')
+CriterionDetail.create(:id => 47, :description => '81% -100%', :is_active => 'true', :weight => '10.0', :criterion_id => '20')
+CriterionDetail.create(:id => 48, :description => 'زيادة الطاقة الاستيعابية', :is_active => 'true', :weight => '1.0', :criterion_id => '21')
+CriterionDetail.create(:id => 49, :description => 'فكرة جديدة', :is_active => 'true', :weight => '2.0', :criterion_id => '21')
+CriterionDetail.create(:id => 50, :description => 'معادلة', :is_active => 'true', :weight => '5.0', :criterion_id => '22')
+CriterionDetail.create(:id => 51, :description => 'معادلة', :is_active => 'true', :weight => '5.0', :criterion_id => '23')
+end
+
+development_goals = DevelopmentGoal.all
+# development_goals.each do |development_goal|
+# 	puts "DevelopmentGoal.create(:id => #{development_goal.id}, :description => '#{development_goal.description}', :is_active => '#{development_goal.is_active}')"
+# end
+if development_goals.count == 0
+	DevelopmentGoal.create(:id => 1, :description => 'التنمية الاقتصادية والتشغيل', :is_active => 'true')
+	DevelopmentGoal.create(:id => 2, :description => 'الحوكمة الرشيدة وبناء المؤسسات', :is_active => 'true')
+	DevelopmentGoal.create(:id => 3, :description => 'الحماية والتنمية الاجتماعية', :is_active => 'true')
+	DevelopmentGoal.create(:id => 4, :description => 'البنية التحتية', :is_active => 'true')
+end
 
 provinces=Province.all
 # provinces.each do |province|
