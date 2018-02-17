@@ -8,9 +8,9 @@
 adminUsers = User.all
 
 if adminUsers.size == 0
-	u1 = User.new(id: 1, email: "admin@isdb.org", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_name: "Admin", email_confirmed: 0, user_name: "Administrator")
+	u1 = User.new(id: 1, email: "admin@isdb.org", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_type: "A", email_confirmed: 0, user_name: "Administrator")
 	u1.save!(validate: false)
 
-	u2 = User.new(id: 2, email: "raedazmi@gmail.com", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_name: "Admin", email_confirmed: 0, user_name: "Administrator")
+	u2 = User.new(id: 2, email: "raedazmi@gmail.com", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_type: "E", email_confirmed: 0, user_name: "Raed Azmi")
 	u2.save!(validate: false)
 end
