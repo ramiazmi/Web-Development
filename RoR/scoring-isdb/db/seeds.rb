@@ -5,4 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.create([{ email: "admin@idb.org" }, { encrypted_password: "$2a$10$Oh5wnwT0qlU/YN1Ll6UHCuXsfC.nvLgNZfFk.YQLtc6WKAbLrLkG2" }, { user_type: "A" }])
+adminUser = User.where("email = 'admin@isdb.org'").first
+
+if !(adminUser) 
+	u = User.new(id: 1, email: "admin@isdb.org", encrypted_password: "$2a$10$mEBvmL0BmrXEK03oVtrpve2jELKBNXv5mcxxWp/lhQIHRsdN9BOHq", user_name: "Admin", email_confirmed: 0, user_name: "Administrator")
+	u.save!(validate: false)
+end
